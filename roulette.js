@@ -1,14 +1,22 @@
 function render_rejected_nums(d) {
-    let container2 = document.getElementById("container2");
-    let elems = document.querySelectorAll(".numbers");
-    for (let i of elems) {
-        i.parentNode.removeChild(i);
+    let table = document.getElementById("rejected_nums");
+    const tbody = document.querySelectorAll("tbody");
+    if (tbody.length >= 1) {
+        const t = tbody[0];
+        t.parentNode.removeChild(t);
     }
-    for (let v of d.rejected_nums) {
-        let div = document.createElement("div");
-        div.innerText = v;
-        div.className = "numbers";
-        container2.appendChild(div);
+    const new_tbody = document.createElement("tbody");
+    table.appendChild(new_tbody);
+    let tr = document.createElement("tr");
+    new_tbody.appendChild(tr);
+    for (let i = 0; i < d.rejected_nums.length; i++) {
+        const td = document.createElement("td");
+        td.innerText = d.rejected_nums[i];
+        tr.appendChild(td);
+        if (((i+1) % 10) === 0) {
+            tr = document.createElement("tr");
+            new_tbody.appendChild(tr);
+        }
     }
 }
 
@@ -77,9 +85,14 @@ const exec_button = document.getElementById("start");
 const undo_button = document.getElementById("undo");
 const back_button = document.getElementById("back");
 const pickup_button = document.getElementById("pickup");
+const show_results_button = document.getElementById("show_results");
+
 
 undo_button.onclick = (e) => {
     const undo_num = d.undo();
+    if (show_results_button.show) {
+        render_rejected_nums(d);
+    }
     if (undo_num === null) {
         alert("これ以上戻せません");
         return;
@@ -97,6 +110,9 @@ back_button.onclick = (e) => {
     }
     const num = parseInt(res);
     const back_num = d.back(num);
+    if (show_results_button.show) {
+        render_rejected_nums(d);
+    }
     if (back_num === null) {
         alert(`${back_num}はまだ出ていません`);
         return;
@@ -116,6 +132,9 @@ exec_button.onclick = (e) => {
     else {
         clearTimeout(timerId);
         const num = d.choose();
+        if (show_results_button.show) {
+            render_rejected_nums(d);
+        }
         if (num === null) {
             alert("すべての数字がでました");
         }
@@ -136,11 +155,27 @@ pickup_button.onclick = (e) => {
     }
     const num = parseInt(res);
     const picked_num = d.pickup(num);
+    if (show_results_button.show) {
+        render_rejected_nums(d);
+    }
     if (back_num === null) {
         alert(`${picked_num}は既に出ています`);
         return;
     }
     alert(`${picked_num}を既に出したことにしました`);
+}
 
+show_results_button.onclick = (e) => {
+    if (!show_results_button.show) {
+        show_results_button.show = true;
+        show_results_button.style.boxShadow = "0px 0px 6px 4px #2666ce";
+        document.getElementById("rejected_nums").style.display = "table";
+        render_rejected_nums(d);
+    }
+    else {
+        document.getElementById("rejected_nums").style.display = "none";
+        show_results_button.show = false;
+        show_results_button.style.boxShadow = "";
+    }
 
 }
