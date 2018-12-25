@@ -67,22 +67,43 @@ div#container2 {
     display: flex;
     width: 100%;
     flex-flow: row wrap;
+    background-color: #282c34;
+    justify-content: space-between;
+    font-size: 6.6vw;
 }
 
 div#show_results {
+    margin-top: 1vh;
     border-radius: 50%;
     text-align: center;
     line-height: 6vw;
+    background-color: white;
     width: 6vw;
+    border: solid 2px #ddd;
     height: 6vw;
     font-size: 2.5vw;
-    box-shadow: 0px 0px 10px 10px #ddd;
     position: fixed;
-    top: calc(100% - 6.5vw);
+    top: calc(100% - 7vw);
     right: 5px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 div#numbers {
     width: 6vw;
+    font-size: 4vw;
+    flex-basis: 8vw;
+}
+
+
+table {
+    width: 80vw;
+}
+
+table td {
     font-size: 5vw;
+    color: black;
+
 }
